@@ -6,6 +6,7 @@ import org.apache.flink.api.java.tuple.Tuple3;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+
 import org.apache.flink.util.Collector;
 
 public class Example {
@@ -24,6 +25,16 @@ public class Example {
                 return person.name.equals("Wilma")|person.name.equals("ASD");
             }
         });
+//        SingleOutputStreamOperator<Tuple3<String, Integer, Double>> map = result.map(new MapFunction<Person, Tuple3<String, Integer, Double>>() {
+//            @Override
+//            public Tuple3<String, Integer, Double> map(Person person) throws Exception {
+//                Integer age = person.age;
+//                String name = person.name;
+//                Tuple3<String, Integer, Double> of = Tuple3.of(name, age, 2.0);
+//
+//                return of;
+//            }
+//        });
         SingleOutputStreamOperator<Tuple2<String, Integer>> personMap = result.map(new MapFunction<Person, Tuple2<String, Integer>>() {
             @Override
             public Tuple2<String, Integer> map(Person person) throws Exception {
@@ -51,7 +62,8 @@ public class Example {
         }).keyBy(value -> value.f0).sum(1).print("saaaaaaa");
 
 
-        result.print();
+//        result.print();
+//        map.print();
         env.execute("test");
     }
 
